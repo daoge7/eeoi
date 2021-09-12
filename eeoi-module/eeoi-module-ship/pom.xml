@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.ccsit.eeoi.module</groupId>
+		<artifactId>eeoi-module</artifactId>
+		<version>2.0.0</version>
+	</parent>
+	<groupId>cn.ccsit.eeoi.module.ship</groupId>
+	<artifactId>eeoi-module-ship</artifactId>
+	<name>eeoi-module-ship</name>
+	<packaging>jar</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+	</properties>
+	<dependencies>
+		<!-- <dependency> <groupId>cn.ccsit.common</groupId> <artifactId>eeoi-common</artifactId> 
+			<version>${project.version}</version> </dependency> -->
+		<!-- <dependency> <groupId>cn.ccsit.component.excel</groupId> <artifactId>eeoi-component-excel</artifactId> 
+			<version>${project.version}</version> </dependency> -->
+		<dependency>
+			<groupId>cn.ccsit.common</groupId>
+			<artifactId>eeoi-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.ccsit.eeoi.module.common</groupId>
+			<artifactId>eeoi-module-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+
+		<dependency>
+			<groupId>cn.ccsit.eeoi.domain.ship</groupId>
+			<artifactId>eeoi-domain-ship</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.ccsit.eeoi.domain.system</groupId>
+			<artifactId>eeoi-domain-system</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.ccsit.eeoi.module.dictionary</groupId>
+			<artifactId>eeoi-module-dictionary</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.system</groupId>
+            <artifactId>eeoi-module-system</artifactId>
+            <version>2.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.dictionary</groupId>
+            <artifactId>eeoi-module-dictionary</artifactId>
+            <version>2.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+</project>

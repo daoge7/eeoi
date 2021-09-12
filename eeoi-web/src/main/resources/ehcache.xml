@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xmlns='http://www.ehcache.org/v3'
+	xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+	xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+     <!-- 	<service id="dd">
+		<jsr107:defaults default-template="dicCache">
+		<jsr107:cache name="parameter1" template="dicCacheTemp" />
+		</jsr107:defaults>
+		</service>  -->
+        
+        <cache alias="cn.ccsit.eeoi.portal.security.shiro.jwt.ShiroDbRealm.AuthorizationCache" uses-template="dicCacheTemp"></cache>
+        <cache alias="cn.ccsit.eeoi.portal.security.shiro.jwt.ShiroDbRealm.AuthenticationCache" uses-template="dicCacheTemp"></cache>
+        <cache alias="cn.ccsit.eeoi.portal.security.shiro.jwt.ShiroJwtRealm.AuthorizationCache" uses-template="dicCacheTemp"></cache>
+        <cache alias="cn.ccsit.eeoi.portal.security.shiro.jwt.ShiroJwtRealm.AuthenticationCache" uses-template="dicCacheTemp"></cache> 
+         
+        <cache alias="dicCache" uses-template="dicCacheTemp"></cache>
+        <cache-template name="dicCacheTemp">
+		<!-- <key-type>java.lang.String</key-type> <value-type>cn.ccsit.stems.service.DicParameter</value-type> -->
+		<expiry>
+
+			<!-- 多长时间不访问缓存过期 days/hours/minutes/seconds -->
+			<!-- <tti unit="minutes">20</tti> -->
+
+			<!-- 多长时间后缓存过期 days/hours/minutes/seconds -->
+			<!-- <ttl unit="minutes">20</ttl> -->
+			<!-- 永不过期 -->
+			<none />
+
+		</expiry>
+		<!-- heap 单位 /entries/B/kB/MB/GB/TB/PB -->
+		<heap unit="entries">20000</heap>
+	</cache-template>
+</config>

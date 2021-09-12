@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<script type="text/javascript"  src="js/js.cookie.min.js"></script>
+<script type="text/javascript"  src="js/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {		
+
+	$('#submit').click(function (){
+		$.ajax({
+			 type:'post',
+			 url:'/login',
+			data:{username:$('#username').val(),password:$('#password').val(),verifycode:$('#verifycode').val(),i18n:2},
+			dataType: 'json',
+			success:function (response,status,xhr){
+				if (response.result==true){
+					if (!navigator.cookieEnabled){
+						alert('cookie must be enabled');
+						return false;
+					}
+					Cookies.set("token",response.data.token);
+					window.location.href="/";
+				}else{
+					alert(response.data);
+				}
+			
+			},
+			error:function (xmlHttpServlet) {
+				debugger 
+				alert(xmlHttpServlet.responseJSON.error);
+			}
+		 }); 
+		return false ;
+	});
+});
+
+</script>
+</head>
+<body >
+	<form action="/login" method="post">
+		<input id="username" type="text" name="username" />
+		<input id="password" type="text" name="password" />
+		<input id="verifycode" type="text" name="verifycode" />
+		<img alt="验证码" onclick="this.src='/defaultKaptcha?FF='+new Date()*1" src="/defaultKaptcha" />
+		<button id="submit" type="button">submit</button>
+	</form>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- 输出到控制台 -->
+        <!--<Console name="console" target="SYSTEM_OUT">-->
+        <Console name="console" class="org.apache.log4j.ConsoleAppender">
+            <!-- 输出格式 -->
+            <PatternLayout pattern="ROOT:%d %-5p %C %L - %m%n"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        <!-- 按天备份一个日志 -->
+        <!-- fileName为生成的文件名，x为路径，也可以采用相对路径模式，filePattern为时间到达后产生新日志，旧日志的文件名 -->
+        <RollingFile name="task" fileName="/webapps/eeoilogs/logs.log"
+                     filePattern="/webapps/eeoilogs/logs_%d{yyyy-MM-dd}.log">
+            <!-- 输出格式 -->
+            <PatternLayout pattern="%d %-5p %m%n"/>
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <!-- Interval，integer型，指定两次封存动作之间的时间间隔。这个配置需要和filePattern结合使用，filePattern日期格式精确到哪一位，interval也精确到哪一个单位。注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd HH-mm-ss}-%i，最小的时间粒度是ss，即秒钟。
+                <!- TimeBasedTriggeringPolicy需要和filePattern配套使用，由于filePattern配置的时间最小粒度是dd天，所以表示每一天新建一个文件保存日志。SizeBasedTriggeringPolicy表示当文件大小大于指定size时，生成新的文件保存日志。 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!-- 此处为每个文件大小策略限制，使用它一般会在文件中filePattern采用%i模式 -->
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <!-- 最多备份30天以内的日志，此处为策略限制，Delete中可以按自己需要用正则表达式编写 -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="/webapps/eeoilogs" maxDepth="1">
+                    <IfFileName glob="logs_*.log"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <!-- 链接到Console和RollingFile标签实现debug以上等级的输出 -->
+    <!--<loggers name="org.hibernate.engine.jdbc.spi.SqlStatementLogger" level="error"/>-->
+    <!--<logger name="org.hibernate.engine.jdbc.spi.SqlStatementLogger" additivity="false">-->
+        <!--<level value ="INFO"/>-->
+        <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+    <Loggers>
+        <Logger name="org.hibernate" level="INFO" additivity="false"/>
+        <Logger name="org.hibernate.engine.jdbc.spi.SqlStatementLogger" level="INFO" additivity="false"/>
+        <Root level="warn">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="task"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
+
+
+
+

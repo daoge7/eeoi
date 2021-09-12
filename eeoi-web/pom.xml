@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- <parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.2.RELEASE</version> <relativePath/> lookup parent from repository
+        </parent> -->
+    <parent>
+        <groupId>cn.ccsit</groupId>
+        <artifactId>eeoi</artifactId>
+        <version>2.0.0</version>
+    </parent>
+    <groupId>cn.ccsit.eeoi</groupId>
+    <artifactId>eeoi-web</artifactId>
+    <!-- <version>2.02</version> -->
+    <name>eeoi-web</name>
+    <!--weblogic -->
+    <packaging>war</packaging>
+    <!--<packaging>jar</packaging>-->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+	</properties>
+    <dependencies>
+        <dependency>
+            <groupId>cn.ccsit.common</groupId>
+            <artifactId>eeoi-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!-- <dependency>
+            <groupId>cn.ccsit.domain.system</groupId>
+            <artifactId>eeoi-domain-system</artifactId>
+            <version>${project.version}</version>
+        </dependency> -->
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.portal</groupId>
+            <artifactId>eeoi-module-portal</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.system</groupId>
+            <artifactId>eeoi-module-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.ship</groupId>
+            <artifactId>eeoi-module-ship</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.dictionary</groupId>
+            <artifactId>eeoi-module-dictionary</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.energyeefic</groupId>
+            <artifactId>eeoi-module-energyeefic</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- <dependency>
+            <groupId>cn.ccsit.eeoi.module.system</groupId>
+            <artifactId>eeoi-module-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ccsit.eeoi.module.ship</groupId>
+            <artifactId>eeoi-module-ship</artifactId>
+            <version>${project.version}</version>
+        </dependency> -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                    <archive>
+                        <manifestEntries>
+                            <Weblogic-Application-Version>${project.version}</Weblogic-Application-Version>
+                        </manifestEntries>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <addClasspath>lib/</addClasspath>
+                        </manifest>
+                    </archive>
+                    <webResources>
+                        <resource>
+                            <directory>${project.basedir}/WEB-INF</directory>
+                        </resource>
+                    </webResources>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>BOOT</classifier>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <!-- <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+ -->
+</project>

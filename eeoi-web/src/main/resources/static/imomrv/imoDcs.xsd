@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="https://gisis.imo.org/XML/FUEL/2018" elementFormDefault="qualified" targetNamespace="https://gisis.imo.org/XML/FUEL/2018" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Records">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="Record" type="RecordType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RecordType">
+    <xs:sequence>
+      <xs:element name="ReportingStartDate" type="xs:date" />
+      <xs:element name="ReportingEndDate" type="xs:date" />
+      <xs:element name="ShipFlag">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{3}" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ShipIMONumber">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{7}" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ShipType">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="BulkCarrier" />
+            <xs:enumeration value="GasCarrier" />
+            <xs:enumeration value="Tanker" />
+            <xs:enumeration value="Containership" />
+            <xs:enumeration value="GeneralCargoShip" />
+            <xs:enumeration value="RefrigeratedCargoCarrier" />
+            <xs:enumeration value="CombinationCarrier" />
+            <xs:enumeration value="PassengerShip" />
+            <xs:enumeration value="RoRoCargoShipVehicleCarrier" />
+            <xs:enumeration value="RoRoCargoShip" />
+            <xs:enumeration value="RoRoPassengerShip" />
+            <xs:enumeration value="LNGCarrier" />
+            <xs:enumeration value="CruisePassengerShip" />
+            <xs:enumeration value="Other" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShipTypeOther">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="250" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ShipGrossTonnage">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="5000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShipNetTonnage" nillable="true" type="xs:positiveInteger" />
+      <xs:element name="ShipDeadweight" type="xs:nonNegativeInteger" />
+	  <xs:element name="ShipMainPropulsionPowers" minOccurs="0" >
+	  <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ShipMainPropulsionPower" type="xs:nonNegativeInteger" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+	  </xs:element>
+	  <xs:element name="ShipAuxiliaryEnginesPowers" minOccurs="0" >
+	  <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ShipAuxiliaryEnginesPower" type="xs:nonNegativeInteger" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+	  </xs:element>
+      <xs:element minOccurs="0" name="ShipEEDI" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ShipIceClass">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="250" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="DistanceTravelled" type="xs:positiveInteger" />
+      <xs:element name="HoursUnderway" type="xs:positiveInteger" />
+      <xs:element minOccurs="0" name="PartyToMARPOLAnnexVI">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Yes" />
+            <xs:enumeration value="No" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ConsumptionData">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Consumption" type="ConsumptionDataType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ReferenceCode">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:minLength value="1" />
+          <xs:maxLength value="250" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="ConsumptionDataType">
+    <xs:sequence>
+      <xs:element name="Quantity" type="xs:positiveInteger" />
+      <xs:element name="Type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="DieselGasOil" />
+            <xs:enumeration value="LightFuel" />
+            <xs:enumeration value="HeavyFuel" />
+            <xs:enumeration value="LPGPropage" />
+            <xs:enumeration value="LPGButane" />
+            <xs:enumeration value="LNG" />
+            <xs:enumeration value="Methanol" />
+            <xs:enumeration value="Ethanol" />
+            <xs:enumeration value="Other" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="TypeOther">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="250" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="TypeCf">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:pattern value="[0-9].[0-9]{3}" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="DataCollectionMethod">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="BDN" />
+            <xs:enumeration value="FlowMeter" />
+            <xs:enumeration value="BunkerTankMonitoring" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

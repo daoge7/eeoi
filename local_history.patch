@@ -1,0 +1,80 @@
+Index: eeoi-module/eeoi-module-energyeefic/src/main/java/cn/ccsit/eeoi/energyeefic/service/MrvDataServiceImp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/eeoi-module/eeoi-module-energyeefic/src/main/java/cn/ccsit/eeoi/energyeefic/service/MrvDataServiceImp.java b/eeoi-module/eeoi-module-energyeefic/src/main/java/cn/ccsit/eeoi/energyeefic/service/MrvDataServiceImp.java
+--- a/eeoi-module/eeoi-module-energyeefic/src/main/java/cn/ccsit/eeoi/energyeefic/service/MrvDataServiceImp.java	(date 1615982453625)
++++ b/eeoi-module/eeoi-module-energyeefic/src/main/java/cn/ccsit/eeoi/energyeefic/service/MrvDataServiceImp.java	(date 1615982453625)
+@@ -1678,23 +1678,23 @@
+         if (collectPreYearVoyage.size() != 0) {
+             OiShipVoyage preYearVoyage = collectPreYearVoyage.get(0);
+             Date preYearEndTime = preYearVoyage.getEndTime();//上一年跨年航段结束时间
+-//            String endportid = preYearVoyage.getEndportid();
+-//            BigDecimal timeZone = BigDecimal.valueOf(0);
+-//            if (endportid != null) {
+-//                RawVoyagePort rawVoyagePort = rawVoyagePortRepository.findByIdAndIsDelete(endportid, 0);
+-//                timeZone = rawVoyagePort.getDeptZone();
+-//            }
+-//            Date preYearEndTimeQuery = DateUtils.utcToLocal(preYearEndTime, timeZone);//查询条件
++            String endportid = preYearVoyage.getEndportid();
++            BigDecimal timeZone = BigDecimal.valueOf(0);
++            if (endportid != null) {
++                RawVoyagePort rawVoyagePort = rawVoyagePortRepository.findByIdAndIsDelete(endportid, 0);
++                timeZone = rawVoyagePort.getDeptZone();
++            }
++            Date preYearEndTimeQuery = DateUtils.utcToLocal(preYearEndTime, timeZone);//查询条件
+             //查询包含在跨年航段内的所有港口
+-            List<RawVoyagePort> byPreAcrossYear = rawVoyagePortRepository.findByAcrossYear(shipId, simpleDateFormat.format(preYearStartTime), simpleDateFormat.format(preYearEndTime));
+-            List<RawVoyagePort> noAcross = byPreAcrossYear.stream().filter(x -> {
+-                Map<String, Date> utcTimeByPort = getUtcTimeByPort(x);
+-                Date arr = utcTimeByPort.get("arr");
+-                Date dept = utcTimeByPort.get("dept");
+-                return (arr.getTime() >= preYearStartTime.getTime() && arr.getTime() <= preYearEndTime.getTime()) || (dept.getTime() >= preYearStartTime.getTime() && dept.getTime() <= preYearEndTime.getTime());
+-            }).collect(Collectors.toList());
++            List<RawVoyagePort> byPreAcrossYear = rawVoyagePortRepository.findByAcrossYear(shipId, simpleDateFormat.format(preYearStartTime), simpleDateFormat.format(preYearEndTimeQuery));
++//            List<RawVoyagePort> noAcross = byPreAcrossYear.stream().filter(x -> {
++//                Map<String, Date> utcTimeByPort = getUtcTimeByPort(x);
++//                Date arr = utcTimeByPort.get("arr");
++//                Date dept = utcTimeByPort.get("dept");
++//                return (arr.getTime() >= preYearStartTime.getTime() && arr.getTime() <= preYearEndTime.getTime()) && (dept.getTime() >= preYearStartTime.getTime() && dept.getTime() <= preYearEndTime.getTime());
++//            }).collect(Collectors.toList());
+             //查询包含在跨年航段内的所有冰区航行和救援
+-            List<RawVoyageSpec> byPreRawSpecAcrossYear = rawVoyageSpecRepository.findByAcrossYear(shipId, simpleDateFormat.format(preYearStartTime), simpleDateFormat.format(preYearEndTime));
++            List<RawVoyageSpec> byPreRawSpecAcrossYear = rawVoyageSpecRepository.findByAcrossYear(shipId, simpleDateFormat.format(preYearStartTime), simpleDateFormat.format(preYearEndTimeQuery));
+             //查询年末时间段是否在港
+             RawVoyagePort endPreYear = rawVoyagePortRepository.findEndYear(shipId, simpleDateFormat.format(preYearStartTime));
+             //计算上一年跨年航段的信息
+@@ -1703,16 +1703,16 @@
+             if (null == endPreYear) {
+                 //封装一个不存在的港口
+                 endPreYear = getAcrossRawPort(preYearStartTime, startOilCons, rawVoyagePortloadings, BigDecimal.ZERO);
+-                noAcross.add(0, endPreYear);
++                byPreAcrossYear.add(0, endPreYear);
+                 //上一年的跨年航段
+-                oiShipVoyagePre = energyEefficService.generatorAcrossInfo(noAcross, byPreRawSpecAcrossYear);
++                oiShipVoyagePre = energyEefficService.generatorAcrossInfo(byPreAcrossYear, byPreRawSpecAcrossYear);
+             }
+             //判断期初时间是否在港，并且是跨年航段的最后一个港口
+-            if (noAcross.size() == 1 && endPreYear != null) {
++            if (byPreAcrossYear.size() == 1 && endPreYear != null) {
+                 //跨年时间段在港航段数据
+                 oiShipVoyagePre = getOiShipVoyageStopPort(preYearStartTime, startOilCons, preYearEndTime, endPreYear);
+             }
+-            if (noAcross.size() > 1 && endPreYear != null) {
++            if (byPreAcrossYear.size() > 1 && endPreYear != null) {
+                 //跨年港口在港油耗
+                 CalculateOilVo calculateOilVoStop = getStopPortOil(endPreYear, preYearStartTime, preYearEndTime, startOilCons);
+                 List<RawVoyagePortoil> rawVoyagePortoils = endPreYear.getRawVoyagePortoils();
+@@ -1751,9 +1751,9 @@
+                 }
+                 endPreYear.setRecordType("0");//因为在港的港口有可能是港界外或者途中抛锚，必须设置为正常的港界内途径港才能计算航段
+                 endPreYear.setInPort("0");
+-                noAcross.add(0, endPreYear);
++                byPreAcrossYear.add(0, endPreYear);
+                 //上一年的跨年航段
+-                oiShipVoyagePre = energyEefficService.generatorAcrossInfo(noAcross, byPreRawSpecAcrossYear);
++                oiShipVoyagePre = energyEefficService.generatorAcrossInfo(byPreAcrossYear, byPreRawSpecAcrossYear);
+                 oiShipVoyagePre.setStartTime(preYearStartTime);
+             }
+             oiShipVoyages.add(preYearVoyage);
